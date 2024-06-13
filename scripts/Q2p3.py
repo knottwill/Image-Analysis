@@ -163,7 +163,7 @@ coeffs = pywt.wavedec2(image,wavelet=w,mode=mode,level=n)
 
 keep_proportions = [0.2, 0.1, 0.05, 0.025, 0.005]
 
-fig, axes = plt.subplots(len(keep_proportions), 2, figsize=(10, 15))
+fig, axes = plt.subplots(2, len(keep_proportions), figsize=(15, 8))
 
 for i, keep in enumerate(keep_proportions):
 
@@ -181,13 +181,13 @@ for i, keep in enumerate(keep_proportions):
 
     # Show reconstruction and difference
 
-    axes[i,0].imshow(recon,cmap='gray')
-    axes[i,0].set_title(f'Keep: {keep}', fontsize=15)
-    axes[i,0].axis('off')
+    axes[0,i].imshow(recon,cmap='gray')
+    axes[0,i].set_title(f'Keep: {keep}', fontsize=15)
+    axes[0,i].axis('off')
 
-    axes[i,1].imshow(abs_diff,cmap='gray')
-    axes[i,1].set_title(f'MSE: {mse:.2f}, PSNR: {psnr:.2f}', fontsize=15)
-    axes[i,1].axis('off')
+    axes[1,i].imshow(abs_diff,cmap='gray')
+    axes[1,i].set_title(f'MSE: {mse:.2f}, PSNR: {psnr:.2f}', fontsize=15)
+    axes[1,i].axis('off')
 
 plt.tight_layout()
 fig.savefig(join(args.output_dir, 'all_compression_results.png'))
