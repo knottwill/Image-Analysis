@@ -3,7 +3,7 @@ Script to solve the problem 2.1 of the coursework.
 
 Fitting straight lines to data in y_line.txt and y_outlier_line.txt using the l1 and l2 norms.
 
-python scripts/Q2p1.py --y_line ./data/y_line.txt --y_outlier_line ./data/y_outlier_line.txt --output ./figures/Q2p1.png
+python scripts/Q2p1.py --y_line ./data/y_line.txt --y_outlier_line ./data/y_outlier_line.txt --output ./figures/linear_regression.png
 """
 
 import numpy as np
@@ -15,7 +15,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Plot the data')
 parser.add_argument('--y_line', default='./data/y_line.txt', type=str, help='Path to y_line.txt')
 parser.add_argument('--y_outlier_line', default='./data/y_outlier_line.txt', type=str, help='Path to y_outlier_line.txt')
-parser.add_argument('--output', default='./figures/Q2p1.png', type=str, help='Path to save the plot')
+parser.add_argument('--output', default='./figures/linear_regression.png', type=str, help='Path to save the plot')
 args = parser.parse_args()
 
 # Load the data
