@@ -8,6 +8,7 @@ python ./scripts/Q2p3.py --img ./data/river_side.jpeg --output_dir ./figures
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage.io as io
+from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 import os
 from os.path import join
 import pywt
@@ -62,18 +63,19 @@ recon = pywt.waverec2(coeffs,wavelet=w,mode=mode)
 
 abs_diff = np.abs(image-recon)
 
-# Calculate MSE and PSNR and compression ratio
-mse = np.mean((image-recon)**2)
-psnr = 10*np.log10(255**2/mse)
+# Calculate MSE, PSNR, and SSIM
+vmin = min(image.min(),recon.min())
+vmax = max(image.max(),recon.max())
 
-print('Uncompressed reconstruction:')
-print(f'MSE: {mse}')
-print(f'PSNR: {psnr:.2f} dB')
+mse = np.mean(abs_diff**2)
+psnr = peak_signal_noise_ratio(image, recon, data_range=vmax-vmin)
+ssim = structural_similarity(image, recon, data_range=vmax-vmin)
+print(f'MSE: {mse:.2f}')
+print(f'PSNR: {psnr:.2f}')
+print(f'SSIM: {ssim:.2f}')
 
 # Show original, reconstruction, and difference
 fig, axes = plt.subplots(1,3,figsize=(8,8))
-vmin = min(image.min(),recon.min())
-vmax = max(image.max(),recon.max())
 axes[0].imshow(image,cmap='gray',vmin=vmin,vmax=vmax)
 axes[0].set_title('Original', fontsize=15)
 
@@ -117,17 +119,19 @@ coeff_thresh = threshold_coefficients(coeffs,0.15)
 recon = pywt.waverec2(coeff_thresh,wavelet=w,mode=mode)
 abs_diff = np.abs(image-recon)
 
-# Calculate MSE and PSNR
-mse = np.mean((image-recon)**2)
-psnr = 10*np.log10(255**2/mse)
-print('Compressed reconstruction:')
-print(f'MSE: {mse}')
-print(f'PSNR: {psnr:.2f} dB')
+# Calculate MSE, PSNR, and SSIM
+vmin = min(image.min(),recon.min())
+vmax = max(image.max(),recon.max())
+
+mse = np.mean(abs_diff**2)
+psnr = peak_signal_noise_ratio(image, recon, data_range=vmax-vmin)
+ssim = structural_similarity(image, recon, data_range=vmax-vmin)
+print(f'MSE: {mse:.2f}')
+print(f'PSNR: {psnr:.2f}')
+print(f'SSIM: {ssim:.2f}')
 
 # Show original, reconstruction, and difference
 fig, axes = plt.subplots(1,3,figsize=(8,8))
-vmin = min(image.min(),recon.min())
-vmax = max(image.max(),recon.max())
 
 axes[0].imshow(image,cmap='gray',vmin=vmin,vmax=vmax)
 axes[0].set_title('Original', fontsize=15)
@@ -175,9 +179,13 @@ for i, keep in enumerate(keep_proportions):
     recon = pywt.waverec2(coeff_thresh,wavelet=w,mode=mode)
     abs_diff = np.abs(image-recon)
 
-    # Calculate MSE and PSNR
-    mse = np.mean((image-recon)**2)
-    psnr = 10*np.log10(255**2/mse)
+    # Calculate MSE, PSNR, and SSIM
+    vmin = min(image.min(),recon.min())
+    vmax = max(image.max(),recon.max())
+
+    mse = np.mean(abs_diff**2)
+    psnr = peak_signal_noise_ratio(image, recon, data_range=vmax-vmin)
+    ssim = structural_similarity(image, recon, data_range=vmax-vmin)
 
     # Show reconstruction and difference
 
@@ -186,7 +194,7 @@ for i, keep in enumerate(keep_proportions):
     axes[0,i].axis('off')
 
     axes[1,i].imshow(abs_diff,cmap='gray')
-    axes[1,i].set_title(f'MSE: {mse:.2f}, PSNR: {psnr:.2f}', fontsize=15)
+    axes[1,i].set_title(f'MSE: {mse:.2f}, PSNR: {psnr:.2f}, SSIM: {ssim:.2f}', fontsize=10)
     axes[1,i].axis('off')
 
 plt.tight_layout()
