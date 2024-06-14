@@ -87,3 +87,58 @@ def find_regions(binary_image, forground_only=True):
     
     n_regions = current_label - 1
     return labelled_image, n_regions
+
+def create_disk(radius):
+    """
+    Creates a disk-shaped structuring element with the given radius.
+    """
+    L = np.arange(-radius, radius + 1)
+    X, Y = np.meshgrid(L, L)
+    selem = (X**2 + Y**2) <= radius**2
+    return selem.astype(np.uint8)
+
+def binary_opening(binary_image, selem):
+    """
+    Performs binary opening on the image with the given structuring element.
+    
+    Parameters
+    ----------
+    binary_image : numpy array
+        Binary image to perform opening on.
+    selem : numpy array
+        Structuring element to use for opening.
+    """
+
+    pad_width = selem.shape[0] // 2
+
+    ##########
+    # Erosion
+    ##########
+    padded_image = np.pad(binary_image, pad_width, mode='constant', constant_values=0)
+    eroded_image = np.zeros_like(binary_image)
+
+    for i in range(eroded_image.shape[0]):
+        for j in range(eroded_image.shape[1]):
+
+            # extract the region of interest
+            region = padded_image[i:i + selem.shape[0], j:j + selem.shape[1]]
+
+            # apply erosion
+            eroded_image[i, j] = np.all(region[selem == 1])
+
+    ##########
+    # Dilation
+    ##########
+    padded_image = np.pad(eroded_image, pad_width, mode='constant', constant_values=0)
+    opened_image = np.zeros_like(binary_image)
+
+    for i in range(opened_image.shape[0]):
+        for j in range(opened_image.shape[1]):
+
+            # extract the region of interest
+            region = padded_image[i:i + selem.shape[0], j:j + selem.shape[1]]
+
+            # apply dilation
+            opened_image[i, j] = np.any(region[selem == 1])
+
+    return opened_image
