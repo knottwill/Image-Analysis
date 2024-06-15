@@ -1,8 +1,8 @@
 """
-Script to solve problem 3.3 of coursework.
+Script to solve the wavelet compression problem (Exercise 2.3) of coursework.
 
 Usage:
-python ./scripts/Q2p3.py --img ./data/river_side.jpeg --output_dir ./figures
+python ./scripts/wavelet_compression.py --img ./data/river_side.jpeg --output_dir ./figures
 """
 
 import numpy as np
@@ -16,13 +16,13 @@ import argparse
 import pandas as pd
 
 # Parse the arguments
-parser = argparse.ArgumentParser(description='Plot the data')
+parser = argparse.ArgumentParser()
 parser.add_argument('--img', default='./data/river_side.jpeg', type=str, help='Path to river_side.jpeg')
 parser.add_argument('--output_dir', default='./figures', type=str, help='Path to output directory')
 args = parser.parse_args()
 
 # Load the image
-A = io.imread('./data/river_side.jpeg')
+A = io.imread(args.img)
 image = np.mean(A, -1); # Convert RGB to grayscale
 
 # Crop out the white image borders
@@ -54,7 +54,7 @@ coeff_arr, coeff_slices = pywt.coeffs_to_array(coeffs)
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 ax.imshow(coeff_arr, cmap='gray',vmin=-0.4,vmax=0.75)
 ax.axis('off')
-fig.savefig(join(args.output_dir, 'wavelet_transform.png'), dpi=300)
+fig.savefig(join(args.output_dir, 'e2p3_transform.png'), dpi=300)
 
 coeffs = pywt.wavedec2(image,wavelet=w,mode=mode,level=n)
 
@@ -70,27 +70,46 @@ vmax = max(image.max(),recon.max())
 mse = np.mean(abs_diff**2)
 psnr = peak_signal_noise_ratio(image, recon, data_range=vmax-vmin)
 ssim = structural_similarity(image, recon, data_range=vmax-vmin)
-print(f'MSE: {mse:.2f}')
-print(f'PSNR: {psnr:.2f}')
-print(f'SSIM: {ssim:.2f}')
+print(f'Un-compressed reconstruction PSNR: {psnr:.5f}')
+print(f'Un-compressed reconstruction SSIM: {ssim:.5f}')
 
 # Show original, reconstruction, and difference
 fig, axes = plt.subplots(1,3,figsize=(8,8))
 axes[0].imshow(image,cmap='gray',vmin=vmin,vmax=vmax)
-axes[0].set_title('Original', fontsize=15)
+axes[0].text(0., 1.05, '(a) Original', fontsize=12, transform=axes[0].transAxes, fontweight="bold")
 
 axes[1].imshow(recon,cmap='gray',vmin=vmin,vmax=vmax)
-axes[1].set_title('Reconstructed', fontsize=15)
+axes[1].text(0., 1.05, '(b) Reconstructed', fontsize=12, transform=axes[1].transAxes, fontweight="bold")
 
 axes[2].imshow(abs_diff,cmap='gray')
-axes[2].set_title('Difference (abs)', fontsize=15)
+axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].transAxes, fontweight="bold")
 
 for ax in axes:
     ax.axis('off')
 
 plt.tight_layout()
 
-fig.savefig(join(args.output_dir, 'reconstruction.png'))
+fig.savefig(join(args.output_dir, 'e2p3_uncompressed.png'))
+
+coeff_sort = np.array(sorted(np.abs(coeff_arr).flatten(), reverse=True))
+
+# plot the sorted coefficients and log of the sorted coefficients
+fig, axes = plt.subplots(1,2,figsize=(12,6))
+
+axes[0].plot(coeff_sort)
+axes[0].text(0.1, 0.9, '(a)', fontsize=15, transform=axes[0].transAxes, fontweight="bold")
+axes[0].set_ylabel(r'Coefficient magnitude $|\alpha_i|$', fontsize=15)
+axes[0].set_xlabel(r'Index $i$', fontsize=15)
+axes[0].grid()
+
+log_coeff = np.log(coeff_sort[coeff_sort > 0.00001])
+axes[1].plot(log_coeff)
+axes[1].text(0.1, 0.9, '(b)', fontsize=15, transform=axes[1].transAxes, fontweight="bold")
+axes[1].set_ylabel(r'$\log|\alpha_i|$', fontsize=15)
+axes[1].set_xlabel(r'Index $i$', fontsize=15)
+axes[1].grid()
+
+fig.savefig(join(args.output_dir, 'e2p3_coefficients.png'))
 
 ##################
 # Threshold to retain largest 15% of coefficients
@@ -126,28 +145,27 @@ vmax = max(image.max(),recon.max())
 mse = np.mean(abs_diff**2)
 psnr = peak_signal_noise_ratio(image, recon, data_range=vmax-vmin)
 ssim = structural_similarity(image, recon, data_range=vmax-vmin)
-print(f'MSE: {mse:.2f}')
-print(f'PSNR: {psnr:.2f}')
-print(f'SSIM: {ssim:.2f}')
+print(f'15% threshold PSNR: {psnr:.5f}')
+print(f'15% threshold SSIM: {ssim:.5f}')
 
 # Show original, reconstruction, and difference
 fig, axes = plt.subplots(1,3,figsize=(8,8))
 
 axes[0].imshow(image,cmap='gray',vmin=vmin,vmax=vmax)
-axes[0].set_title('Original', fontsize=15)
+axes[0].text(0., 1.05, '(a) Original', fontsize=12, transform=axes[0].transAxes, fontweight="bold")
 
 axes[1].imshow(recon,cmap='gray',vmin=vmin,vmax=vmax)
-axes[1].set_title('Reconstructed', fontsize=15)
+axes[1].text(0., 1.05, '(b) Reconstructed', fontsize=12, transform=axes[1].transAxes, fontweight="bold")
 
 axes[2].imshow(abs_diff,cmap='gray')
-axes[2].set_title('Difference (abs)', fontsize=15)
+axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].transAxes, fontweight="bold")
 
 for ax in axes:
     ax.axis('off')
 
 plt.tight_layout()
 
-fig.savefig('./figures/reconstruction_15_compressed.png')
+fig.savefig(join(args.output_dir, 'e2p3_threshold_15.png'))
 
 # Plot the coefficients and highlight the largest 15%
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -157,7 +175,7 @@ retained = pywt.coeffs_to_array(coeff_thresh)[0] > 0
 ax.imshow(retained, cmap='gray')
 ax.axis('off')
 
-fig.savefig(join(args.output_dir, 'thresholded_transform.png'))
+fig.savefig(join(args.output_dir, 'e2p3_threshold_transform.png'))
 
 #####################
 # Try different thresholds
@@ -182,20 +200,18 @@ for i, keep in enumerate(keep_proportions):
     # Calculate MSE, PSNR, and SSIM
     vmin = min(image.min(),recon.min())
     vmax = max(image.max(),recon.max())
-
-    mse = np.mean(abs_diff**2)
     psnr = peak_signal_noise_ratio(image, recon, data_range=vmax-vmin)
     ssim = structural_similarity(image, recon, data_range=vmax-vmin)
 
     # Show reconstruction and difference
 
     axes[0,i].imshow(recon,cmap='gray')
-    axes[0,i].set_title(f'Keep: {keep}', fontsize=15)
+    axes[0,i].set_title(f'{keep*100}% Retention', fontsize=12)
     axes[0,i].axis('off')
 
     axes[1,i].imshow(abs_diff,cmap='gray')
-    axes[1,i].set_title(f'MSE: {mse:.2f}, PSNR: {psnr:.2f}, SSIM: {ssim:.2f}', fontsize=10)
+    axes[1,i].set_title(f'PSNR: {psnr:.3f}, SSIM: {ssim:.3f}', fontsize=12)
     axes[1,i].axis('off')
 
 plt.tight_layout()
-fig.savefig(join(args.output_dir, 'all_compression_results.png'))
+fig.savefig(join(args.output_dir, 'e2p3_all_compression.png'))
