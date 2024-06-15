@@ -112,46 +112,6 @@ axes[1, 1].set_xlabel('Component', fontsize=12)
 
 fig.savefig(join(args.output_dir, 'CS_signals.png'))
 
-########################
-# Same but with matrices
-########################
-
-def calculate_coherence(matrix):
-    # Normalize columns of the matrix
-    normalized_matrix = matrix / np.linalg.norm(matrix, axis=0)
-    
-    # Compute the Gram matrix
-    gram_matrix = np.abs(np.dot(normalized_matrix.T, normalized_matrix))
-    
-    # Zero out the diagonal elements to exclude self-inner products
-    np.fill_diagonal(gram_matrix, 0)
-    
-    # The coherence is the maximum absolute value in the off-diagonal elements
-    coherence = np.max(gram_matrix)
-    
-    return coherence
-
-F = fftc(np.eye(L))
-
-# Uniform subsampling matrix
-U = np.diag(uniform_mask)
-F_U = U @ F
-
-# Random subsampling matrix
-R = np.diag(random_mask)
-F_R = R @ F
-
-assert np.allclose(X_uniform, F_U @ s)
-assert np.allclose(X_random, F_R @ s)
-
-# Calculate coherence
-coherence_uniform = calculate_coherence(F_U)
-coherence_random = calculate_coherence(F_R)
-
-print("Coherence of the uniform subsampling matrix:", coherence_uniform)
-print("Coherence of the random subsampling matrix:", coherence_random)
-# plt.stem(X_uniform)
-
 #####################
 # IST Reconstruction
 #####################
