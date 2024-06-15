@@ -102,6 +102,7 @@ cf_mask = morphology.remove_small_holes(cf_mask, 100)
 selem = morphology.disk(2)
 cf_mask = morphology.binary_opening(cf_mask, selem)
 
+plt.tight_layout()
 fig.savefig(join(args.output_dir, 'flower_steps.png'))
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 5))

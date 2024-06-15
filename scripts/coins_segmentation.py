@@ -73,6 +73,7 @@ axes[3].text(0, 1.05, '(d)', fontsize=25, transform=axes[3].transAxes, fontweigh
 for ax in axes:
     ax.axis('off')
 
+plt.tight_layout()
 fig.savefig(join(args.output_dir, 'coins_steps.png'))
 
 # Assume grid is 4x6
@@ -102,15 +103,10 @@ for region in regions:
         for coordinates in region.coords:
             mask[coordinates[0], coordinates[1]] = 0
 
-fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
 
-axes[0].imshow(orig_image, cmap='gray')
-axes[0].text(0, 1.05, '(a)', fontsize=20, transform=axes[0].transAxes, fontweight="bold")
+plot_image_mask_overlay(orig_image, mask, ax, dim_factor=0.3, cmap='gray', border_color='yellow')
+ax.axis('off')
 
-plot_image_mask_overlay(orig_image, mask, axes[1], dim_factor=0.3, cmap='gray', border_color='yellow')
-axes[1].text(0, 1.05, '(b)', fontsize=20, transform=axes[1].transAxes, fontweight="bold")
-
-for ax in axes:
-    ax.axis('off')
-
+plt.tight_layout()
 fig.savefig(join(args.output_dir, 'coins_segmentation.png'))
