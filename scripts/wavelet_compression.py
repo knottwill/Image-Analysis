@@ -54,6 +54,7 @@ coeff_arr, coeff_slices = pywt.coeffs_to_array(coeffs)
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 ax.imshow(coeff_arr, cmap='gray',vmin=-0.4,vmax=0.75)
 ax.axis('off')
+plt.tight_layout()
 fig.savefig(join(args.output_dir, 'e2p3_transform.png'), dpi=300)
 
 coeffs = pywt.wavedec2(image,wavelet=w,mode=mode,level=n)
@@ -88,7 +89,6 @@ for ax in axes:
     ax.axis('off')
 
 plt.tight_layout()
-
 fig.savefig(join(args.output_dir, 'e2p3_uncompressed.png'))
 
 coeff_sort = np.array(sorted(np.abs(coeff_arr).flatten(), reverse=True))
@@ -109,6 +109,7 @@ axes[1].set_ylabel(r'$\log|\alpha_i|$', fontsize=15)
 axes[1].set_xlabel(r'Index $i$', fontsize=15)
 axes[1].grid()
 
+plt.tight_layout()
 fig.savefig(join(args.output_dir, 'e2p3_coefficients.png'))
 
 ##################
@@ -164,7 +165,6 @@ for ax in axes:
     ax.axis('off')
 
 plt.tight_layout()
-
 fig.savefig(join(args.output_dir, 'e2p3_threshold_15.png'))
 
 # Plot the coefficients and highlight the largest 15%
@@ -175,6 +175,7 @@ retained = pywt.coeffs_to_array(coeff_thresh)[0] > 0
 ax.imshow(retained, cmap='gray')
 ax.axis('off')
 
+plt.tight_layout()
 fig.savefig(join(args.output_dir, 'e2p3_threshold_transform.png'))
 
 #####################
@@ -185,7 +186,7 @@ coeffs = pywt.wavedec2(image,wavelet=w,mode=mode,level=n)
 
 keep_proportions = [0.2, 0.1, 0.05, 0.025, 0.005]
 
-fig, axes = plt.subplots(2, len(keep_proportions), figsize=(15, 8))
+fig, axes = plt.subplots(2, len(keep_proportions), figsize=(15, 6))
 
 for i, keep in enumerate(keep_proportions):
 
