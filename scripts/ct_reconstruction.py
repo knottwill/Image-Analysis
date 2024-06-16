@@ -54,25 +54,25 @@ t0 = time()
 fbp_odl = fbp_op_odl(data_odl)
 print('FBP reconstruction time = {:.3f} seconds'.format(time()-t0))
 
-data_range=np.max(phantom_np)-np.min(phantom_np)
-psnr_fbp = compare_psnr(phantom_np,fbp_np,data_range=data_range)
-ssim_fbp = compare_ssim(phantom_np,fbp_np,data_range=data_range)
-
 # convert the image and the sinogram to numpy arrays
 phantom_np = phantom_odl.__array__()
 fbp_np = fbp_odl.__array__()
 data_np = data_odl.__array__()
 print('sinogram size = {}'.format(data_np.shape))
 
+data_range=np.max(phantom_np)-np.min(phantom_np)
+psnr_fbp = compare_psnr(phantom_np,fbp_np,data_range=data_range)
+ssim_fbp = compare_ssim(phantom_np,fbp_np,data_range=data_range)
+
 # Display Shepp-Logan phantom and noisy sinogram
 fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
 axes[0].imshow(phantom_np.transpose(), cmap='bone')
-axes[0].text(0, 1.05, '(a) Shepp-Logan phantom', fontsize=15, transform=axes[0].transAxes, fontweight="bold")
+axes[0].text(0, 1.05, '(a) Shepp-Logan phantom', fontsize=15, transform=axes[0].transAxes)
 axes[0].axis('off')
 
 axes[1].imshow(data_np, cmap='bone')
-axes[1].text(0, 1.5, '(b) Noisy sinogram', fontsize=15, transform=axes[1].transAxes, fontweight="bold")
+axes[1].text(0, 1.5, '(b) Noisy sinogram', fontsize=15, transform=axes[1].transAxes)
 axes[1].axis('off')
 
 fig.savefig(args.output_dir + '/phantom_sinogram.png', bbox_inches='tight', dpi=300)
@@ -234,18 +234,18 @@ ssim_lgd = compare_ssim(phantom_np,lgd_recon_np,data_range=data_range)
 fig, axes = plt.subplots(1, 4, figsize=(12, 6))
 
 axes[0].imshow(phantom_np.transpose(), cmap='bone')
-axes[0].text(0, 1.05, '(a) Ground-truth', fontsize=15, transform=axes[0].transAxes, fontweight="bold")
+axes[0].text(0, 1.05, '(a) Ground-truth', fontsize=15, transform=axes[0].transAxes)
 
 axes[1].imshow(fbp_np.transpose(), cmap='bone')
-axes[1].text(0, 1.05, '(b) FBP', fontsize=15, transform=axes[1].transAxes, fontweight="bold")
+axes[1].text(0, 1.05, '(b) FBP', fontsize=15, transform=axes[1].transAxes)
 axes[1].set_xlabel('PSNR: {:.2f} dB, SSIM: {:.2f}'.format(psnr_fbp, ssim_fbp))
 
 axes[2].imshow(x_admm_np.transpose(), cmap='bone')
-axes[2].text(0, 1.05, '(c) TV', fontsize=15, transform=axes[2].transAxes, fontweight="bold")
+axes[2].text(0, 1.05, '(c) TV', fontsize=15, transform=axes[2].transAxes)
 axes[2].set_xlabel('PSNR: {:.2f} dB, SSIM: {:.2f}'.format(psnr_tv, ssim_tv))
 
 axes[3].imshow(lgd_recon_np.transpose(), cmap='bone')
-axes[3].text(0, 1.05, '(d) LGD', fontsize=15, transform=axes[3].transAxes, fontweight="bold")
+axes[3].text(0, 1.05, '(d) LGD', fontsize=15, transform=axes[3].transAxes)
 axes[3].set_xlabel('PSNR: {:.2f} dB, SSIM: {:.2f}'.format(psnr_lgd, ssim_lgd))
 
 for ax in axes:
