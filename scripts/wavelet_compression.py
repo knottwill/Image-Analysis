@@ -179,9 +179,9 @@ fig.savefig(join(args.output_dir, 'e2p3_threshold_transform.png'), dpi=300, bbox
 
 coeffs = pywt.wavedec2(image,wavelet=w,mode=mode,level=n)
 
-keep_proportions = [0.2, 0.1, 0.05, 0.025, 0.005]
+keep_proportions = [0.2, 0.1, 0.05, 0.025]
 
-fig, axes = plt.subplots(2, len(keep_proportions), figsize=(15, 6))
+fig, axes = plt.subplots(1, len(keep_proportions), figsize=(15, 4))
 
 for i, keep in enumerate(keep_proportions):
 
@@ -201,12 +201,9 @@ for i, keep in enumerate(keep_proportions):
 
     # Show reconstruction and difference
 
-    axes[0,i].imshow(recon,cmap='gray')
-    axes[0,i].set_title(f'{keep*100}% Retention', fontsize=12)
-    axes[0,i].axis('off')
-
-    axes[1,i].imshow(abs_diff,cmap='gray')
-    axes[1,i].set_title(f'PSNR: {psnr:.3f}, SSIM: {ssim:.3f}', fontsize=12)
-    axes[1,i].axis('off')
+    axes[i].imshow(recon,cmap='gray')
+    axes[i].set_title(f'{keep*100}% Retention', fontsize=12)
+    axes[i].set_xlabel(f'PSNR: {psnr:.3f}, SSIM: {ssim:.3f}', fontsize=11)
+    axes[i].set_xticks([]); axes[i].set_yticks([])
 
 fig.savefig(join(args.output_dir, 'e2p3_all_compression.png'), dpi=300, bbox_inches='tight')

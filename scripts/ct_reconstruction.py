@@ -1,6 +1,8 @@
 """
 Script to compare CT reconstruction methods: FBP, TV, and Learned Gradient Descent (LGD) networks.
 
+This script was adapted from the provided notebook.
+
 Usage:
 python scripts/ct_reconstruction.py --output_dir ./figures
 """
