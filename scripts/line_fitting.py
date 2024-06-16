@@ -72,8 +72,8 @@ axes[1].text(0, 1.05, '(b)', fontsize=15, transform=axes[1].transAxes, fontweigh
 
 for ax in axes:
     ax.legend()
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
+    ax.set_xlabel('x', fontsize=12)
+    ax.set_ylabel('y', fontsize=12)
 
 plt.tight_layout()
 fig.savefig(args.output, bbox_inches='tight')

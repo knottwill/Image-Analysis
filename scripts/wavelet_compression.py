@@ -54,8 +54,7 @@ coeff_arr, coeff_slices = pywt.coeffs_to_array(coeffs)
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 ax.imshow(coeff_arr, cmap='gray',vmin=-0.4,vmax=0.75)
 ax.axis('off')
-plt.tight_layout()
-fig.savefig(join(args.output_dir, 'e2p3_transform.png'), dpi=300)
+fig.savefig(join(args.output_dir, 'e2p3_transform.png'), dpi=300, bbox_inches='tight')
 
 coeffs = pywt.wavedec2(image,wavelet=w,mode=mode,level=n)
 
@@ -88,8 +87,7 @@ axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].tr
 for ax in axes:
     ax.axis('off')
 
-plt.tight_layout()
-fig.savefig(join(args.output_dir, 'e2p3_uncompressed.png'))
+fig.savefig(join(args.output_dir, 'e2p3_uncompressed.png'), dpi=300, bbox_inches='tight')
 
 coeff_sort = np.array(sorted(np.abs(coeff_arr).flatten(), reverse=True))
 
@@ -109,8 +107,7 @@ axes[1].set_ylabel(r'$\log|\alpha_i|$', fontsize=15)
 axes[1].set_xlabel(r'Index $i$', fontsize=15)
 axes[1].grid()
 
-plt.tight_layout()
-fig.savefig(join(args.output_dir, 'e2p3_coefficients.png'))
+fig.savefig(join(args.output_dir, 'e2p3_coefficients.png'), dpi=300, bbox_inches='tight')
 
 ##################
 # Threshold to retain largest 15% of coefficients
@@ -164,8 +161,7 @@ axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].tr
 for ax in axes:
     ax.axis('off')
 
-plt.tight_layout()
-fig.savefig(join(args.output_dir, 'e2p3_threshold_15.png'))
+fig.savefig(join(args.output_dir, 'e2p3_threshold_15.png'), dpi=300, bbox_inches='tight')
 
 # Plot the coefficients and highlight the largest 15%
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -175,8 +171,7 @@ retained = pywt.coeffs_to_array(coeff_thresh)[0] > 0
 ax.imshow(retained, cmap='gray')
 ax.axis('off')
 
-plt.tight_layout()
-fig.savefig(join(args.output_dir, 'e2p3_threshold_transform.png'))
+fig.savefig(join(args.output_dir, 'e2p3_threshold_transform.png'), dpi=300, bbox_inches='tight')
 
 #####################
 # Try different thresholds
@@ -214,5 +209,4 @@ for i, keep in enumerate(keep_proportions):
     axes[1,i].set_title(f'PSNR: {psnr:.3f}, SSIM: {ssim:.3f}', fontsize=12)
     axes[1,i].axis('off')
 
-plt.tight_layout()
-fig.savefig(join(args.output_dir, 'e2p3_all_compression.png'))
+fig.savefig(join(args.output_dir, 'e2p3_all_compression.png'), dpi=300, bbox_inches='tight')
