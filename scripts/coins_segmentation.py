@@ -1,12 +1,5 @@
 """
-Script to segment the coins in the image using the following steps:
-1. Median filter to remove noise
-2. Find the edges using Canny
-3. Fill the holes in the edges and remove small objects
-4. Find the centroids of the coins
-5. Assume grid is 4x6 and find the grid position of each coin
-6. Get segmentation of coin [1,1], [2,2], [3,3], [4,4]
-7. Get rid of all other coins in cleaned image
+Script to perform the coins segmentation (Module 1)
 
 Usage:
 python scripts/coins_segmentation.py --img ./data/coins.png --output_dir ./figures
@@ -34,6 +27,7 @@ parser = argparse.ArgumentParser(description='Segment the lungs in a CT image')
 parser.add_argument('--img', default='./data/coins.png', type=str, help='Path to CT image')
 parser.add_argument('--output_dir', default='./figures', type=str, help='Path to output directory')
 args = parser.parse_args()
+os.makedirs(args.output_dir, exist_ok=True)
 
 # Load the image
 image = io.imread(args.img, as_gray=True)

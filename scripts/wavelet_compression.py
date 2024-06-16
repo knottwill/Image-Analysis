@@ -20,6 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--img', default='./data/river_side.jpeg', type=str, help='Path to river_side.jpeg')
 parser.add_argument('--output_dir', default='./figures', type=str, help='Path to output directory')
 args = parser.parse_args()
+os.makedirs(args.output_dir, exist_ok=True)
 
 # Load the image
 A = io.imread(args.img)

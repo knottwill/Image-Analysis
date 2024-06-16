@@ -24,7 +24,8 @@ from src.plotting import plot_image_mask_overlay
 parser = argparse.ArgumentParser()
 parser.add_argument('--img', type=str, default='./data/noisy_flower.jpg', help='Path to image')
 parser.add_argument('--output_dir', type=str, default='./figures', help='Path to output directory')
-args = parser.parse_args('--img ./data/noisy_flower.jpg'.split(' '))
+args = parser.parse_args()
+os.makedirs(args.output_dir, exist_ok=True)
 
 # Load image
 image_path = args.img

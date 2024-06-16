@@ -24,6 +24,7 @@ parser = argparse.ArgumentParser(description='Segment the lungs in a CT image')
 parser.add_argument('--img', default='./data/CT.png', type=str, help='Path to CT image')
 parser.add_argument('--output_dir', default='./figures', type=str, help='Path to output directory')
 args = parser.parse_args()
+os.makedirs(args.output_dir, exist_ok=True)
 
 # Load the image
 image_path = args.img
@@ -85,15 +86,8 @@ for ax in axes:
 fig.savefig(join(args.output_dir, 'CT_steps.png'))
 
 # Plot the original image and the segmentation mask overlay
-fig, axes = plt.subplots(1, 2, figsize=(10, 5))
-
-axes[0].imshow(image, cmap='gray')
-axes[0].text(0, 1.05, '(a)', fontsize=20, transform=axes[0].transAxes, fontweight="bold")
-
-plot_image_mask_overlay(image, mask, axes[1], dim_factor=0.3, cmap='gray', border_color='yellow')
-axes[1].text(0, 1.05, '(b)', fontsize=20, transform=axes[1].transAxes, fontweight="bold")
-
-for ax in axes:
-    ax.axis('off')
+fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+plot_image_mask_overlay(image, mask, ax, dim_factor=0.3, cmap='gray', border_color='yellow')
+ax.axis('off')
 
 fig.savefig(join(args.output_dir, 'CT_segmentation.png'))

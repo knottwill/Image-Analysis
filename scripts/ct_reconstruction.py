@@ -18,6 +18,7 @@ from skimage.metrics import structural_similarity as compare_ssim
 from time import time
 import torch.nn as nn
 import argparse
+import os
 
 import torch
 import odl
@@ -26,6 +27,7 @@ import odl.contrib.torch as odl_torch
 parser = argparse.ArgumentParser()
 parser.add_argument('--output_dir', default='./figures', type=str, help='Path to save the plot')
 args = parser.parse_args()
+os.makedirs(args.output_dir, exist_ok=True)
 
 # --- Set up the forward operator (ray transform) in ODL --- #
 # Reconstruction space: functions on the rectangle [-20, 20]^2

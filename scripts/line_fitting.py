@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cvxpy as cp
 import argparse
+import os
 
 # Parse the arguments
 parser = argparse.ArgumentParser(description='Plot the data')
@@ -17,6 +18,7 @@ parser.add_argument('--y_line', default='./data/y_line.txt', type=str, help='Pat
 parser.add_argument('--y_outlier_line', default='./data/y_outlier_line.txt', type=str, help='Path to y_outlier_line.txt')
 parser.add_argument('--output', default='./figures/line_fits.png', type=str, help='Path to save the plot')
 args = parser.parse_args()
+os.makedirs(os.path.dirname(args.output), exist_ok=True)
 
 # Load the data
 y_line = np.loadtxt(args.y_line)
