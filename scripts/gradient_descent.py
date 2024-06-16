@@ -4,7 +4,7 @@ Script to solve problem 3.1 of the coursework.
 Minimize the function f(x) = x1^2/2 + x2^2 using the gradient descent method with the step size alpha = 1/L, 
 where L is the Lipschitz constant of the gradient of f.
 
-python ./scripts/Q3p1.py
+python ./scripts/gradient_descent.py
 """
 
 def f(x):
