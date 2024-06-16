@@ -3,7 +3,7 @@ Script to solve the problem 2.1 of the coursework.
 
 Fitting straight lines to data in y_line.txt and y_outlier_line.txt using the l1 and l2 norms.
 
-python scripts/Q2p1.py --y_line ./data/y_line.txt --y_outlier_line ./data/y_outlier_line.txt --output ./figures/linear_regression.png
+python scripts/line_fitting.py --y_line ./data/y_line.txt --y_outlier_line ./data/y_outlier_line.txt --output ./figures/line_fits.png
 """
 
 import numpy as np
@@ -15,46 +15,46 @@ import argparse
 parser = argparse.ArgumentParser(description='Plot the data')
 parser.add_argument('--y_line', default='./data/y_line.txt', type=str, help='Path to y_line.txt')
 parser.add_argument('--y_outlier_line', default='./data/y_outlier_line.txt', type=str, help='Path to y_outlier_line.txt')
-parser.add_argument('--output', default='./figures/linear_regression.png', type=str, help='Path to save the plot')
+parser.add_argument('--output', default='./figures/line_fits.png', type=str, help='Path to save the plot')
 args = parser.parse_args()
 
 # Load the data
-y_line = np.loadtxt('./data/y_line.txt')
-y_outlier_line = np.loadtxt('./data/y_outlier_line.txt')
+y_line = np.loadtxt(args.y_line)
+y_outlier_line = np.loadtxt(args.y_outlier_line)
 x = np.arange(0, len(y_line))
 
-# Define the variables
-a = cp.Variable()
-b = cp.Variable()
+# Function to solve for L2 norm (least squares) using closed-form solution
+def solve_l2(x, y):
+    n = len(x)
+    S_x = np.sum(x)
+    S_y = np.sum(y)
+    S_xx = np.sum(x**2)
+    S_xy = np.sum(x * y)
+    
+    m = (n * S_xy - S_x * S_y) / (n * S_xx - S_x**2)
+    c = (S_y - m * S_x) / n
+    return m, c
 
-# Define the objective functions
-y_line_l1_obj = cp.Minimize(cp.norm(a * x + b - y_line, 1)) # l1 norm y_line
-y_line_l2_obj = cp.Minimize(cp.norm(a * x + b - y_line, 2)) # l2 norm y_line
-y_outlier_line_l1_obj = cp.Minimize(cp.norm(a * x + b - y_outlier_line, 1)) # l1 norm y_outlier_line
-y_outlier_line_l2_obj = cp.Minimize(cp.norm(a * x + b - y_outlier_line, 2)) # l2 norm y_outlier_line
-
-# Define the problems
-y_line_l1 = cp.Problem(y_line_l1_obj)
-y_line_l2 = cp.Problem(y_line_l2_obj)
-y_outlier_line_l1 = cp.Problem(y_outlier_line_l1_obj)
-y_outlier_line_l2 = cp.Problem(y_outlier_line_l2_obj)
+# Function to solve for L1 norm using linear programming
+def solve_l1(x, y):
+    m = cp.Variable()
+    c = cp.Variable()
+    u = cp.Variable(len(x))
+    
+    constraints = [u >= y - (m * x + c), u >= -(y - (m * x + c))]
+    objective = cp.Minimize(cp.sum(u))
+    problem = cp.Problem(objective, constraints)
+    problem.solve()
+    
+    print("Solver: ", problem.solver_stats.solver_name)
+    return m.value, c.value
 
 # Solve the problems
-y_line_l1.solve()
-a_line_l1 = a.value
-b_line_l1 = b.value
+a_line_l2, b_line_l2 = solve_l2(x, y_line)
+a_outlier_line_l2, b_outlier_line_l2 = solve_l2(x, y_outlier_line)
 
-y_line_l2.solve()
-a_line_l2 = a.value
-b_line_l2 = b.value
-
-y_outlier_line_l1.solve()
-a_outlier_line_l1 = a.value
-b_outlier_line_l1 = b.value
-
-y_outlier_line_l2.solve()
-a_outlier_line_l2 = a.value
-b_outlier_line_l2 = b.value
+a_line_l1, b_line_l1 = solve_l1(x, y_line)
+a_outlier_line_l1, b_outlier_line_l1 = solve_l1(x, y_outlier_line)
 
 # Plot the data
 fig, axes = plt.subplots(1, 2, figsize=(10, 5))
