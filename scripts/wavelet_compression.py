@@ -77,13 +77,13 @@ print(f'Un-compressed reconstruction SSIM: {ssim:.5f}')
 # Show original, reconstruction, and difference
 fig, axes = plt.subplots(1,3,figsize=(8,8))
 axes[0].imshow(image,cmap='gray',vmin=vmin,vmax=vmax)
-axes[0].text(0., 1.05, '(a) Original', fontsize=12, transform=axes[0].transAxes, fontweight="bold")
+axes[0].text(0., 1.05, '(a) Original', fontsize=12, transform=axes[0].transAxes)
 
 axes[1].imshow(recon,cmap='gray',vmin=vmin,vmax=vmax)
-axes[1].text(0., 1.05, '(b) Reconstructed', fontsize=12, transform=axes[1].transAxes, fontweight="bold")
+axes[1].text(0., 1.05, '(b) Reconstructed', fontsize=12, transform=axes[1].transAxes)
 
 axes[2].imshow(abs_diff,cmap='gray')
-axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].transAxes, fontweight="bold")
+axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].transAxes)
 
 for ax in axes:
     ax.axis('off')
@@ -151,13 +151,13 @@ print(f'15% threshold SSIM: {ssim:.5f}')
 fig, axes = plt.subplots(1,3,figsize=(8,8))
 
 axes[0].imshow(image,cmap='gray',vmin=vmin,vmax=vmax)
-axes[0].text(0., 1.05, '(a) Original', fontsize=12, transform=axes[0].transAxes, fontweight="bold")
+axes[0].text(0., 1.05, '(a) Original', fontsize=12, transform=axes[0].transAxes)
 
 axes[1].imshow(recon,cmap='gray',vmin=vmin,vmax=vmax)
-axes[1].text(0., 1.05, '(b) Reconstructed', fontsize=12, transform=axes[1].transAxes, fontweight="bold")
+axes[1].text(0., 1.05, '(b) Reconstructed', fontsize=12, transform=axes[1].transAxes)
 
 axes[2].imshow(abs_diff,cmap='gray')
-axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].transAxes, fontweight="bold")
+axes[2].text(0., 1.05, '(c) Difference (abs)', fontsize=12, transform=axes[2].transAxes)
 
 for ax in axes:
     ax.axis('off')
@@ -203,7 +203,7 @@ for i, keep in enumerate(keep_proportions):
     # Show reconstruction and difference
 
     axes[i].imshow(recon,cmap='gray')
-    axes[i].set_title(f'{keep*100}% Retention', fontsize=12)
+    axes[i].set_title(f'{keep*100}% Retention', fontsize=13)
     axes[i].set_xlabel(f'PSNR: {psnr:.3f}, SSIM: {ssim:.3f}', fontsize=11)
     axes[i].set_xticks([]); axes[i].set_yticks([])
 

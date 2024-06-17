@@ -96,19 +96,19 @@ fig, axes = plt.subplots(2, 2, figsize=(10, 7))
 
 axes[0, 0].stem(true_s)
 axes[0, 0].text(0.03, 0.9, '(a)', fontsize=15, transform=axes[0, 0].transAxes, fontweight="bold")
-axes[0, 0].set_ylabel('Real part', fontsize=12)
+axes[0, 0].set_ylabel('Real part', fontsize=14)
 
 axes[0, 1].stem(s)
 axes[0, 1].text(0.03, 0.9, '(b)', fontsize=15, transform=axes[0, 1].transAxes, fontweight="bold")
 
 axes[1, 0].stem(np.real(s_uniform))
 axes[1, 0].text(0.03, 0.9, '(c)', fontsize=15, transform=axes[1, 0].transAxes, fontweight="bold")
-axes[1, 0].set_xlabel('Component', fontsize=12)
-axes[1, 0].set_ylabel('Real part', fontsize=12)
+axes[1, 0].set_xlabel('Component', fontsize=14)
+axes[1, 0].set_ylabel('Real part', fontsize=14)
 
 axes[1, 1].stem(np.real(s_random))
 axes[1, 1].text(0.03, 0.9, '(d)', fontsize=15, transform=axes[1, 1].transAxes, fontweight="bold")
-axes[1, 1].set_xlabel('Component', fontsize=12)
+axes[1, 1].set_xlabel('Component', fontsize=14)
 
 fig.savefig(join(args.output_dir, 'CS_signals.png'))
 
@@ -135,16 +135,16 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
 axes[0].stem(s)
 axes[0].text(0.03, 0.9, '(a)', fontsize=15, transform=axes[0].transAxes, fontweight="bold")
-axes[0].set_ylabel('Real part', fontsize=12)
-axes[0].set_xlabel('Component', fontsize=12)
+axes[0].set_ylabel('Real part', fontsize=14)
+axes[0].set_xlabel('Component', fontsize=14)
 
 axes[1].stem(np.real(s_unif_recon))
 axes[1].text(0.03, 0.9, '(b)', fontsize=15, transform=axes[1].transAxes, fontweight="bold")
-axes[1].set_xlabel('Component', fontsize=12)
+axes[1].set_xlabel('Component', fontsize=14)
 
 axes[2].stem(np.real(s_rand_recon))
 axes[2].text(0.03, 0.9, '(c)', fontsize=15, transform=axes[2].transAxes, fontweight="bold")
-axes[2].set_xlabel('Component', fontsize=12)
+axes[2].set_xlabel('Component', fontsize=14)
 
 fig.savefig(join(args.output_dir, 'CS_reconstructions.png'))
 
