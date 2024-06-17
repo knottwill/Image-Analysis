@@ -104,7 +104,7 @@ selem = morphology.disk(2)
 cf_mask = morphology.binary_opening(cf_mask, selem)
 
 plt.tight_layout()
-fig.savefig(join(args.output_dir, 'flower_steps.png'))
+fig.savefig(join(args.output_dir, 'flower_steps.png'), dpi=300, bbox_inches='tight')
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
@@ -120,4 +120,4 @@ for ax in axes:
     ax.axis('off')
 
 plt.tight_layout()
-fig.savefig(join(args.output_dir, 'flower_segmentation.png'))
+fig.savefig(join(args.output_dir, 'flower_segmentation.png'), dpi=300, bbox_inches='tight')

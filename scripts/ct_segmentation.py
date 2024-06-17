@@ -1,6 +1,8 @@
 """
 Script to segment the lungs in a CT image.
 
+We manually implemented all the steps of the segmentation process, using only numpy.
+
 Usage:
 python ./scripts/ct_segmentation.py --img ./data/CT.png --output_dir ./figures
 """
@@ -83,11 +85,11 @@ axes[3].text(0, 1.05, '(d)', fontsize=25, transform=axes[3].transAxes, fontweigh
 for ax in axes:
     ax.axis('off')
 
-fig.savefig(join(args.output_dir, 'CT_steps.png'))
+fig.savefig(join(args.output_dir, 'CT_steps.png'), dpi=300, bbox_inches='tight')
 
 # Plot the original image and the segmentation mask overlay
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 plot_image_mask_overlay(image, mask, ax, dim_factor=0.3, cmap='gray', border_color='yellow')
 ax.axis('off')
 
-fig.savefig(join(args.output_dir, 'CT_segmentation.png'))
+fig.savefig(join(args.output_dir, 'CT_segmentation.png'), dpi=300, bbox_inches='tight')

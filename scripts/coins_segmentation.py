@@ -68,7 +68,7 @@ for ax in axes:
     ax.axis('off')
 
 plt.tight_layout()
-fig.savefig(join(args.output_dir, 'coins_steps.png'))
+fig.savefig(join(args.output_dir, 'coins_steps.png'), bbox_inches='tight')
 
 # Assume grid is 4x6
 # Find the grid position of each coin
@@ -103,4 +103,4 @@ plot_image_mask_overlay(orig_image, mask, ax, dim_factor=0.3, cmap='gray', borde
 ax.axis('off')
 
 plt.tight_layout()
-fig.savefig(join(args.output_dir, 'coins_segmentation.png'))
+fig.savefig(join(args.output_dir, 'coins_segmentation.png'), bbox_inches='tight')
