@@ -55,7 +55,7 @@ def IST(X_start, lam, nitr, X_ref=None):
     recon = ifftc(Xi) # Reconstruct the signal
     return recon, err
 
-# Generate the original signal with sparsity 10 and length 100.
+# Generate signal of length 100 with 10 non zero ceoffs
 np.random.seed(1)
 L = 100
 k = 10
@@ -66,15 +66,15 @@ nzc = np.random.rand(k) + 1
 true_s = np.concatenate((nzc, np.zeros(L - len(nzc))))
 true_s = true_s[np.random.permutation(L)]
 
-# Add Gaussian noise to the original signal.
+# Add Gaussian noise
 sigma = 0.05
 s = true_s + sigma * np.random.randn(L)
 
-# Compute the Fourier transform to move to the frequency domain where we can subsample.
+# Compute Fourier transofrm
 X = fftc(s)
 keep = 32
 
-# Create uniform and random masks for subsampling.
+# Create uniform and random undersampling masks
 uniform_mask = np.zeros(L)
 uniform_idx = np.arange(L, step=L // keep)[:keep]
 uniform_mask[uniform_idx] = 1
@@ -83,11 +83,11 @@ random_mask = np.zeros(L)
 random_idx = sorted(np.random.choice(L, keep, replace=False))
 random_mask[random_idx] = 1
 
-# Subsample by applying the masks.
+# Subsample
 X_uniform = X * uniform_mask
 X_random = X * random_mask
 
-# Reconstruct the signals (time domain) from the subsampled spectra.
+# Reconstruct the signals via inverse Fourier transform
 s_uniform = ifftc(X_uniform) * 4
 s_random = ifftc(X_random) * 4
 
