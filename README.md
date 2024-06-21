@@ -47,11 +47,11 @@ $ conda env create -f environment.yml -n <env-name>
 If this fails due to conflicts relating to the `odl` package, you will have to re-create the smaller environment (not containg `odl`), and the CT reconstruction part of the project can be done using `CT_reconstruction.ipynb` in google colab (More details below). The smaller environment can be re-created using one of the following:
 
 ```bash
-# light environment
+# Option 1: Conda
 $ conda env create -f env_light.yml -n <env-name>
 
 # If env_light didnt work, try:
-$ conda env create -f env_light.yml -n <env-name>
+$ conda env create -f env_very_light.yml -n <env-name>
 $ conda activate <env-name>
 $ pip install pywavelets
 
