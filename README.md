@@ -28,21 +28,39 @@ Topics:
 ├── Dockerfile         # containerisation instructions
 ├── LICENSE            # license for project
 ├── README.md          # this file
-└── environment.yml    # environment specifications
+├── environment.yml    # environment specifications
+├── env_light.yml      # lightweight environment (not including odl)
+├── env_very_light.yml # environment not including odl, pywavelets OR version specs
 ```
 
 ## Usuage
 
-To re-create the environment for the project you can either use conda or docker. Navigate to the root directory of the project and use one of the following:
+#### Re-creating environment
+
+Attempt to re-create the full environment for the project:
 
 ```bash
-# Option 1: re-create conda environment
+# Try re-create exact conda environment
 $ conda env create -f environment.yml -n <env-name>
+```
+
+If this fails due to conflicts relating to the `odl` package, you will have to re-create the smaller environment (not containg `odl`), and the CT reconstruction part of the project can be done using `CT_reconstruction.ipynb` in google colab (More details below). The smaller environment can be re-created using one of the following:
+
+```bash
+# light environment
+$ conda env create -f env_light.yml -n <env-name>
+
+# If env_light didnt work, try:
+$ conda env create -f env_light.yml -n <env-name>
+$ conda activate <env-name>
+$ pip install pywavelets
 
 # Option 2: Generate docker image and run container
 $ docker build -t <image_name> .
 $ docker run -ti <image_name>
 ```
+
+#### Reproducing all results EXCEPT problem 3.2
 
 To re-produce all results/figures presented in the report, use the following commands
 
@@ -67,12 +85,19 @@ $ python ./scripts/wavelet_compression.py --img ./data/river_side.jpeg --output_
 
 # 3.1 Gradient descent
 $ python ./scripts/gradient_descent.py
-
-# 3.2 CT reconstruction
-$ python scripts/ct_reconstruction.py --output_dir ./figures
 ```
 
 In each case, plots will be saved to `--output_dir` and other results will be printed to the terminal.
+
+#### Reproducing problem 3.2
+
+If you were able to reproduce the full environment from `environment.yml`, then run the script below. Also try running the script if you happen to have an environment with the relevant packages installed.
+
+```bash
+$ python scripts/ct_reconstruction.py --output_dir ./figures
+```
+
+Otherwise, use the notebook `CT_reconstruction.ipynb` in google colab. 
 
 ### Timing
 

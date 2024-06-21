@@ -15,4 +15,5 @@ WORKDIR /project
 COPY . /project
 
 # update the conda environment
-RUN conda env update --file environment.yml --name base
+RUN conda env update --file env_very_light.yml --name base
+RUN pip install pywavelets

@@ -1,0 +1,16 @@
+name: ia
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python 
+  - pip
+  - numpy 
+  - matplotlib 
+  - scipy 
+  - scikit-image 
+  - scikit-learn 
+  - pandas
+  - cvxpy
+  - pip:
+    - icecream
