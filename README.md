@@ -4,7 +4,7 @@
 
 ## Description
 
-This project solves various problems relating to image analysis, as described by `ImageAnalysis.pdf`. The analysis report can be found in `report/`. 
+This project solves various problems relating to image analysis, as described in `ImageAnalysis.pdf`. The analysis report can be found in `report/`. 
 
 Topics:
 - Image segmentation
