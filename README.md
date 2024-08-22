@@ -14,6 +14,8 @@ Topics:
 - Optimization
 - CT reconstruction (TV-regularization, learned gradient descent)
 
+<img src="./figures/summary.png">
+
 <b>Project structure</b>
 
 ```bash
